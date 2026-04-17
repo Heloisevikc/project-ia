@@ -72,6 +72,46 @@ const questions = [
     }
 ];
 
+// ========== NOVA FUNÇÃO: EMBARALHAR ARRAY ==========
+// Algoritmo Fisher-Yates para embaralhamento
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+// ========== NOVA FUNÇÃO: CRIAR PERGUNTA EMBARALHADA ==========
+// Esta função cria uma cópia da pergunta com as opções embaralhadas
+// e atualiza o índice da resposta correta
+function shuffleQuestion(question) {
+    // Criar array de objetos com opção e índice original
+    const optionsWithIndex = question.options.map((text, index) => ({
+        text: text,
+        originalIndex: index
+    }));
+    
+    // Embaralhar as opções
+    const shuffledOptions = shuffleArray(optionsWithIndex);
+    
+    // Encontrar o novo índice da resposta correta
+    const newCorrectIndex = shuffledOptions.findIndex(
+        item => item.originalIndex === question.correct
+    );
+    
+    // Retornar nova pergunta com opções embaralhadas
+    return {
+        ...question,
+        options: shuffledOptions.map(item => item.text),
+        correct: newCorrectIndex
+    };
+}
+
+// ========== VARIÁVEL PARA ARMAZENAR PERGUNTAS EMBARALHADAS ==========
+let shuffledQuestions = [];
+
 // Frases icônicas para o resultado baseado na pontuação
 const resultQuotes = [
     {
@@ -137,12 +177,15 @@ function init() {
     reviewBtn.addEventListener('click', showReview);
 }
 
-// Iniciar quiz
+// ========== MODIFICADO: Iniciar quiz com embaralhamento ==========
 function startQuiz() {
     currentQuestionIndex = 0;
     score = 0;
     userAnswers = [];
     quizFinished = false;
+    
+    // Embaralhar todas as perguntas ao iniciar um novo quiz
+    shuffledQuestions = questions.map(q => shuffleQuestion(q));
     
     startScreen.classList.remove('active');
     quizScreen.classList.add('active');
@@ -151,14 +194,14 @@ function startQuiz() {
     loadQuestion();
 }
 
-// Carregar pergunta atual
+// ========== MODIFICADO: Carregar pergunta usa shuffledQuestions ==========
 function loadQuestion() {
-    const question = questions[currentQuestionIndex];
+    const question = shuffledQuestions[currentQuestionIndex];
     questionText.textContent = question.question;
-    questionCounter.textContent = `Pergunta ${currentQuestionIndex + 1}/${questions.length}`;
+    questionCounter.textContent = `Pergunta ${currentQuestionIndex + 1}/${shuffledQuestions.length}`;
     
     // Atualizar barra de progresso
-    const progress = ((currentQuestionIndex) / questions.length) * 100;
+    const progress = ((currentQuestionIndex) / shuffledQuestions.length) * 100;
     progressFill.style.width = `${progress}%`;
     
     // Limpar container de opções
@@ -204,9 +247,9 @@ function loadQuestion() {
     }
 }
 
-// Selecionar opção
+// ========== MODIFICADO: Selecionar opção usa shuffledQuestions ==========
 function selectOption(index, button) {
-    const question = questions[currentQuestionIndex];
+    const question = shuffledQuestions[currentQuestionIndex];
     const isCorrect = index === question.correct;
     const allOptions = document.querySelectorAll('.option-btn');
     
@@ -256,14 +299,14 @@ function updateScore() {
     scoreDisplay.textContent = score;
 }
 
-// Próxima pergunta
+// ========== MODIFICADO: Próxima pergunta usa shuffledQuestions ==========
 function nextQuestion() {
-    if (currentQuestionIndex < questions.length - 1) {
+    if (currentQuestionIndex < shuffledQuestions.length - 1) {
         currentQuestionIndex++;
         loadQuestion();
         
         // Atualizar barra de progresso
-        const progress = (currentQuestionIndex / questions.length) * 100;
+        const progress = (currentQuestionIndex / shuffledQuestions.length) * 100;
         progressFill.style.width = `${progress}%`;
     } else {
         finishQuiz();
@@ -292,10 +335,10 @@ function finishQuiz() {
 // Reiniciar quiz
 function restartQuiz() {
     resultScreen.classList.remove('active');
-    startQuiz();
+    startQuiz(); // Isso já chama o embaralhamento novamente
 }
 
-// Mostrar revisão (voltar para o quiz em modo review)
+// ========== MODIFICADO: Modo review usa shuffledQuestions ==========
 function showReview() {
     if (quizFinished) {
         currentQuestionIndex = 0;
@@ -304,7 +347,7 @@ function showReview() {
         loadQuestion();
         
         // Atualizar progresso
-        const progress = (currentQuestionIndex / questions.length) * 100;
+        const progress = (currentQuestionIndex / shuffledQuestions.length) * 100;
         progressFill.style.width = `${progress}%`;
         
         // Desabilitar interação com opções
@@ -317,12 +360,12 @@ function showReview() {
     }
 }
 
-// Handler para navegação no modo review
+// ========== MODIFICADO: Handler para navegação no modo review ==========
 function reviewNextHandler() {
-    if (currentQuestionIndex < questions.length - 1) {
+    if (currentQuestionIndex < shuffledQuestions.length - 1) {
         currentQuestionIndex++;
         loadQuestion();
-        const progress = (currentQuestionIndex / questions.length) * 100;
+        const progress = (currentQuestionIndex / shuffledQuestions.length) * 100;
         progressFill.style.width = `${progress}%`;
     } else {
         // Voltar para tela de resultado
