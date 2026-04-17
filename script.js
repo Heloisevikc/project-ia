@@ -72,7 +72,8 @@ const questions = [
     }
 ];
 
-// ========== FUNÇÃO PARA EMBARALHAR ARRAY ==========
+// ========== NOVA FUNÇÃO: EMBARALHAR ARRAY ==========
+// Algoritmo Fisher-Yates para embaralhamento
 function shuffleArray(array) {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -82,19 +83,25 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-// ========== FUNÇÃO PARA CRIAR PERGUNTA EMBARALHADA ==========
+// ========== NOVA FUNÇÃO: CRIAR PERGUNTA EMBARALHADA ==========
+// Esta função cria uma cópia da pergunta com as opções embaralhadas
+// e atualiza o índice da resposta correta
 function shuffleQuestion(question) {
+    // Criar array de objetos com opção e índice original
     const optionsWithIndex = question.options.map((text, index) => ({
         text: text,
         originalIndex: index
     }));
     
+    // Embaralhar as opções
     const shuffledOptions = shuffleArray(optionsWithIndex);
     
+    // Encontrar o novo índice da resposta correta
     const newCorrectIndex = shuffledOptions.findIndex(
         item => item.originalIndex === question.correct
     );
     
+    // Retornar nova pergunta com opções embaralhadas
     return {
         ...question,
         options: shuffledOptions.map(item => item.text),
@@ -137,34 +144,6 @@ const resultQuotes = [
     }
 ];
 
-// Mapeamento de personagens por faixa de pontuação
-const characterResults = [
-    {
-        min: 0,
-        max: 4,
-        name: "Sr. Stratford",
-        icon: "fa-user-tie"
-    },
-    {
-        min: 5,
-        max: 7,
-        name: "Michael Eckman",
-        icon: "fa-user-graduate"
-    },
-    {
-        min: 8,
-        max: 9,
-        name: "Cameron James",
-        icon: "fa-user-secret"
-    },
-    {
-        min: 10,
-        max: 10,
-        name: "Kat Stratford",
-        icon: "fa-user-astronaut"
-    }
-];
-
 // Estado da aplicação
 let currentQuestionIndex = 0;
 let score = 0;
@@ -189,8 +168,6 @@ const finalScore = document.getElementById('final-score');
 const resultTitle = document.getElementById('result-title');
 const resultDescription = document.getElementById('result-description');
 const resultQuote = document.getElementById('result-quote');
-const resultCharacterIcon = document.getElementById('result-character-icon');
-const resultCharacterName = document.getElementById('result-character-name');
 
 // Inicialização
 function init() {
@@ -200,7 +177,7 @@ function init() {
     reviewBtn.addEventListener('click', showReview);
 }
 
-// Iniciar quiz com embaralhamento
+// ========== MODIFICADO: Iniciar quiz com embaralhamento ==========
 function startQuiz() {
     currentQuestionIndex = 0;
     score = 0;
@@ -217,21 +194,25 @@ function startQuiz() {
     loadQuestion();
 }
 
-// Carregar pergunta atual
+// ========== MODIFICADO: Carregar pergunta usa shuffledQuestions ==========
 function loadQuestion() {
     const question = shuffledQuestions[currentQuestionIndex];
     questionText.textContent = question.question;
     questionCounter.textContent = `Pergunta ${currentQuestionIndex + 1}/${shuffledQuestions.length}`;
     
+    // Atualizar barra de progresso
     const progress = ((currentQuestionIndex) / shuffledQuestions.length) * 100;
     progressFill.style.width = `${progress}%`;
     
+    // Limpar container de opções
     optionsContainer.innerHTML = '';
     feedbackMessage.classList.remove('show', 'correct-feedback', 'incorrect-feedback');
     feedbackMessage.innerHTML = '';
     
+    // Desabilitar botão próximo
     nextBtn.disabled = true;
     
+    // Criar botões de opções
     const letters = ['A', 'B', 'C', 'D'];
     question.options.forEach((option, index) => {
         const button = document.createElement('button');
@@ -241,6 +222,7 @@ function loadQuestion() {
             <span>${option}</span>
         `;
         
+        // Verificar se já foi respondida (para o modo review)
         if (userAnswers[currentQuestionIndex] !== undefined) {
             button.disabled = true;
             if (index === question.correct) {
@@ -255,6 +237,7 @@ function loadQuestion() {
         optionsContainer.appendChild(button);
     });
     
+    // Se já foi respondida, mostrar feedback e habilitar próximo
     if (userAnswers[currentQuestionIndex] !== undefined) {
         const selectedIndex = userAnswers[currentQuestionIndex];
         const isCorrect = selectedIndex === question.correct;
@@ -264,23 +247,27 @@ function loadQuestion() {
     }
 }
 
-// Selecionar opção
+// ========== MODIFICADO: Selecionar opção usa shuffledQuestions ==========
 function selectOption(index, button) {
     const question = shuffledQuestions[currentQuestionIndex];
     const isCorrect = index === question.correct;
     const allOptions = document.querySelectorAll('.option-btn');
     
+    // Salvar resposta
     userAnswers[currentQuestionIndex] = index;
     
+    // Atualizar pontuação
     if (isCorrect) {
         score++;
         updateScore();
     }
     
+    // Desabilitar todas as opções
     allOptions.forEach(btn => {
         btn.disabled = true;
     });
     
+    // Marcar opção correta e incorreta
     allOptions.forEach((btn, i) => {
         if (i === question.correct) {
             btn.classList.add('correct');
@@ -289,8 +276,10 @@ function selectOption(index, button) {
         }
     });
     
+    // Mostrar feedback
     showFeedback(isCorrect, question.explanation);
     
+    // Habilitar botão próximo
     nextBtn.disabled = false;
 }
 
@@ -310,12 +299,13 @@ function updateScore() {
     scoreDisplay.textContent = score;
 }
 
-// Próxima pergunta
+// ========== MODIFICADO: Próxima pergunta usa shuffledQuestions ==========
 function nextQuestion() {
     if (currentQuestionIndex < shuffledQuestions.length - 1) {
         currentQuestionIndex++;
         loadQuestion();
         
+        // Atualizar barra de progresso
         const progress = (currentQuestionIndex / shuffledQuestions.length) * 100;
         progressFill.style.width = `${progress}%`;
     } else {
@@ -329,21 +319,16 @@ function finishQuiz() {
     quizScreen.classList.remove('active');
     resultScreen.classList.add('active');
     
+    // Atualizar pontuação final
     finalScore.textContent = score;
     
+    // Encontrar mensagem de resultado apropriada
     const result = resultQuotes.find(r => score >= r.min && score <= r.max);
     resultTitle.textContent = result.title;
     resultDescription.textContent = result.description;
     resultQuote.textContent = result.quote;
     
-    // Atualizar ícone do personagem baseado na pontuação
-    const character = characterResults.find(c => score >= c.min && score <= c.max);
-    if (resultCharacterIcon && resultCharacterName) {
-        // Limpa classes anteriores e adiciona a nova
-        resultCharacterIcon.innerHTML = `<i class="fas ${character.icon}"></i>`;
-        resultCharacterName.textContent = character.name;
-    }
-    
+    // Animar barra de progresso final
     progressFill.style.width = '100%';
 }
 
@@ -353,7 +338,7 @@ function restartQuiz() {
     startQuiz(); // Isso já chama o embaralhamento novamente
 }
 
-// Mostrar revisão
+// ========== MODIFICADO: Modo review usa shuffledQuestions ==========
 function showReview() {
     if (quizFinished) {
         currentQuestionIndex = 0;
@@ -361,17 +346,21 @@ function showReview() {
         quizScreen.classList.add('active');
         loadQuestion();
         
+        // Atualizar progresso
         const progress = (currentQuestionIndex / shuffledQuestions.length) * 100;
         progressFill.style.width = `${progress}%`;
         
+        // Desabilitar interação com opções
         nextBtn.disabled = false;
         nextBtn.textContent = 'Próxima →';
         
+        // Modificar comportamento do botão próximo para navegação
+        const originalNextHandler = nextBtn.onclick;
         nextBtn.onclick = reviewNextHandler;
     }
 }
 
-// Handler para navegação no modo review
+// ========== MODIFICADO: Handler para navegação no modo review ==========
 function reviewNextHandler() {
     if (currentQuestionIndex < shuffledQuestions.length - 1) {
         currentQuestionIndex++;
@@ -379,6 +368,7 @@ function reviewNextHandler() {
         const progress = (currentQuestionIndex / shuffledQuestions.length) * 100;
         progressFill.style.width = `${progress}%`;
     } else {
+        // Voltar para tela de resultado
         quizScreen.classList.remove('active');
         resultScreen.classList.add('active');
         nextBtn.onclick = nextQuestion;
