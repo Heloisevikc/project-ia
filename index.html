@@ -1,208 +1,112 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz • 10 Coisas que Eu Odeio em Você</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Quiz: 10 Coisas que Eu Odeio em Você</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Background com imagem temática -->
-    <div class="bg-overlay"></div>
-    
     <div class="container">
-        <!-- Tela de início -->
-        <div id="start-screen" class="screen active">
-            <div class="start-content">
-                <!-- Banner do filme -->
-                <div class="movie-banner">
-                    <div class="banner-image">
-                        <img src="https://via.placeholder.com/600x200/8B1E3F/FFFFFF?text=10+Coisas+que+Eu+Odeio+em+Voce" 
-                             alt="Banner 10 Coisas que Eu Odeio em Você"
-                             class="banner-img">
-                        <!-- Substitua o src acima pelo caminho da sua imagem -->
-                        <!-- Exemplo: <img src="img/banner.jpg" alt="Banner do filme"> -->
-                    </div>
-                </div>
-                
-                <div class="movie-title-wrapper">
-                    <span class="number-badge">10</span>
-                    <h1 class="movie-title">
-                        Coisas que Eu<br>Odeio em Você
-                    </h1>
-                </div>
-                
-                <!-- Cards com personagens -->
-                <div class="characters-preview">
-                    <div class="character-card">
-                        <div class="character-img kat">
-                            <img src="https://via.placeholder.com/80/6B1630/FFFFFF?text=Kat" 
-                                 alt="Kat Stratford">
-                            <!-- Substituir: <img src="img/kat.jpg" alt="Kat Stratford"> -->
-                        </div>
-                        <span>Kat</span>
-                    </div>
-                    <div class="character-card">
-                        <div class="character-img patrick">
-                            <img src="https://via.placeholder.com/80/2D1B2E/FFFFFF?text=Patrick" 
-                                 alt="Patrick Verona">
-                            <!-- Substituir: <img src="img/patrick.jpg" alt="Patrick"> -->
-                        </div>
-                        <span>Patrick</span>
-                    </div>
-                    <div class="character-card">
-                        <div class="character-img bianca">
-                            <img src="https://via.placeholder.com/80/4A2035/FFFFFF?text=Bianca" 
-                                 alt="Bianca Stratford">
-                            <!-- Substituir: <img src="img/bianca.jpg" alt="Bianca"> -->
-                        </div>
-                        <span>Bianca</span>
-                    </div>
-                    <div class="character-card">
-                        <div class="character-img cameron">
-                            <img src="https://via.placeholder.com/80/D4A017/FFFFFF?text=Cameron" 
-                                 alt="Cameron James">
-                            <!-- Substituir: <img src="img/cameron.jpg" alt="Cameron"> -->
-                        </div>
-                        <span>Cameron</span>
-                    </div>
-                </div>
-                
-                <p class="subtitle">Você realmente conhece esse clássico dos anos 90?</p>
-                
-                <div class="start-details">
-                    <div class="detail-item">
-                        <i class="fas fa-question-circle"></i>
-                        <span>10 perguntas</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-star"></i>
-                        <span>4 alternativas cada</span>
-                    </div>
-                </div>
-                
-                <button id="start-btn" class="btn-primary">
-                    <i class="fas fa-play"></i> Iniciar Quiz
-                </button>
-                
-                <!-- Cena icônica -->
-                <div class="iconic-scene">
-                    <div class="scene-icon">
-                        <i class="fas fa-music"></i>
-                    </div>
-                    <p class="disclaimer">🎬 "Eu odeio o jeito que você me olha... e eu não consigo parar de pensar em você."</p>
-                </div>
-            </div>
-        </div>
+        <header class="header">
+            <h1 class="title">
+                <i class="fas fa-heart-broken"></i>
+                10 Coisas que Eu Odeio em Você
+                <i class="fas fa-heart"></i>
+            </h1>
+            <p class="subtitle">"I hate the way I don't hate you. Not even close, not even a little bit, not even at all."</p>
+        </header>
 
-        <!-- Tela do quiz -->
-        <div id="quiz-screen" class="screen">
-            <header class="quiz-header">
-                <div class="header-content">
-                    <!-- Mini banner no header -->
-                    <div class="mini-logo">
-                        <img src="https://via.placeholder.com/120x30/8B1E3F/FFFFFF?text=10+Coisas" 
-                             alt="Logo">
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-info">
-                            <span id="question-counter">Pergunta 1/10</span>
-                            <span id="score-display"><i class="fas fa-trophy"></i> <span id="score-value">0</span></span>
-                        </div>
-                        <div class="progress-bar">
-                            <div id="progress-fill" class="progress-fill"></div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <main class="quiz-main">
-                <!-- Imagem decorativa da cena -->
-                <div class="quiz-decoration">
-                    <div class="vinyl-record">
-                        <i class="fas fa-compact-disc"></i>
-                    </div>
-                    <div class="scene-thumbnail">
-                        <img src="https://via.placeholder.com/300x100/2D1B2E/D4A017?text=Padua+High" 
-                             alt="Padua High School">
-                        <!-- Substituir: <img src="img/padua-high.jpg" alt="Padua High"> -->
-                    </div>
-                </div>
-                
-                <div class="question-card">
-                    <div class="movie-icon">
+        <main>
+            <!-- Tela inicial -->
+            <div id="start-screen" class="screen active">
+                <div class="poster-container">
+                    <div class="movie-poster">
                         <i class="fas fa-film"></i>
+                        <span>1999</span>
                     </div>
-                    <h2 id="question-text" class="question-text">Carregando pergunta...</h2>
                 </div>
-
-                <div id="options-container" class="options-container">
-                    <!-- Opções geradas dinamicamente -->
+                <h2>Você é um verdadeiro fã?</h2>
+                <p>Teste seus conhecimentos sobre este clássico do cinema adolescente estrelado por Heath Ledger e Julia Stiles.</p>
+                <div class="quiz-info">
+                    <div class="info-item">
+                        <i class="fas fa-question-circle"></i>
+                        <span>10 Perguntas</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-random"></i>
+                        <span>Alternativas embaralhadas</span>
+                    </div>
                 </div>
-
-                <div id="feedback-message" class="feedback-message"></div>
-            </main>
-
-            <footer class="quiz-footer">
-                <button id="next-btn" class="btn-next" disabled>
-                    Próxima <i class="fas fa-arrow-right"></i>
+                <button id="start-btn" class="btn btn-primary">
+                    <i class="fas fa-play"></i> Começar Quiz
                 </button>
-            </footer>
-        </div>
+            </div>
 
-        <!-- Tela de resultado -->
-        <div id="result-screen" class="screen">
-            <div class="result-content">
-                <!-- Imagem de fundo do resultado -->
-                <div class="result-backdrop">
-                    <img src="https://via.placeholder.com/400x150/8B1E3F/FFFFFF?text=Final+Scene" 
-                         alt="Cena final">
-                </div>
-                
-                <div class="result-header">
-                    <i class="fas fa-clapperboard"></i>
-                    <h2>Resultado Final</h2>
-                </div>
-
-                <div class="score-circle">
-                    <div class="score-inner">
-                        <span id="final-score" class="final-score">0</span>
-                        <span class="score-max">/10</span>
+            <!-- Tela do quiz -->
+            <div id="quiz-screen" class="screen">
+                <div class="quiz-header">
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                    <div class="quiz-stats">
+                        <span id="question-counter">Pergunta 1/10</span>
+                        <span id="score-display">
+                            <i class="fas fa-star"></i> <span id="score">0</span>
+                        </span>
                     </div>
                 </div>
 
-                <div id="result-message" class="result-message">
-                    <h3 id="result-title">Título do Resultado</h3>
-                    <p id="result-description">Descrição do resultado</p>
+                <div id="question-container" class="question-container">
+                    <h3 id="question-text" class="question-text"></h3>
+                    <div id="options-container" class="options-container"></div>
                 </div>
 
-                <!-- Imagem do personagem baseado na pontuação -->
-                <div id="character-result" class="character-result">
-                    <img id="result-character-img" 
-                         src="https://via.placeholder.com/120/6B1630/FFFFFF?text=?" 
-                         alt="Personagem">
-                    <span id="result-character-name"></span>
-                </div>
-
-                <div id="quote-box" class="quote-box">
-                    <i class="fas fa-quote-left"></i>
-                    <p id="result-quote"></p>
-                </div>
-
-                <div class="result-actions">
-                    <button id="restart-btn" class="btn-secondary">
-                        <i class="fas fa-rotate-left"></i> Jogar Novamente
-                    </button>
-                    <button id="review-btn" class="btn-outline">
-                        <i class="fas fa-list-check"></i> Ver Respostas
+                <div class="quiz-footer">
+                    <button id="next-btn" class="btn btn-secondary" disabled>
+                        Próxima <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
-        </div>
+
+            <!-- Tela de resultado -->
+            <div id="result-screen" class="screen">
+                <div class="result-card">
+                    <div class="trophy-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h2>Quiz Finalizado!</h2>
+                    <div class="final-score">
+                        <span>Você acertou</span>
+                        <div class="score-circle">
+                            <span id="final-score">0</span>/10
+                        </div>
+                    </div>
+                    <div id="result-message" class="result-message"></div>
+                    
+                    <div id="quote-container" class="quote-container">
+                        <i class="fas fa-quote-left"></i>
+                        <p id="movie-quote"></p>
+                        <i class="fas fa-quote-right"></i>
+                    </div>
+
+                    <div class="result-actions">
+                        <button id="restart-btn" class="btn btn-primary">
+                            <i class="fas fa-redo-alt"></i> Jogar Novamente
+                        </button>
+                        <button id="home-btn" class="btn btn-outline">
+                            <i class="fas fa-home"></i> Início
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>✨ Feito com amor para os fãs de Kat Stratford e Patrick Verona ✨</p>
+        </footer>
     </div>
 
     <script src="script.js"></script>
