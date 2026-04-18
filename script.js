@@ -23,7 +23,7 @@ const questions = [
         quote: "Eu odeio o jeito que você dirige meu carro. E odeio quando você me encara."
     },
     {
-        question: "Qual é o nome da irmã mais velha de Kat Stratford?",
+        question: "Qual é o nome da irmã mais nova de Kat Stratford?",
         options: [
             "Mandy Stratford",
             "Bianca Stratford",
