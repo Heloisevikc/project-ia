@@ -5,7 +5,7 @@
 }
 
 :root {
-   background-image: url('./i1003975.jpeg');
+   --primary-dark: #cf2158;
     --primary-dark: #6B1530;
     --secondary-color: #FFB8D1;
     --accent-color: #FF6B9D;
