@@ -5,12 +5,12 @@
 }
 
 :root {
-   --primary-dark: #cf2158;
-    --primary-dark: #6B1530;
+    --primary-dark: #cf2158;
+    --primary-color: #6B1530;
     --secondary-color: #FFB8D1;
     --accent-color: #FF6B9D;
     --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-   background-image: url('images (17).jpg');
+    --card-bg: rgba(255, 255, 255, 0.08);
     --card-border: rgba(255, 255, 255, 0.1);
     --text-light: #ffffff;
     --text-muted: #b8b8d0;
